@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.hebrew {
+  direction: rtl;
+}
+
+@layer components {
+  .button {
+    @apply border bg-blue-800 py-2 px-8 rounded-md shadow-md shadow-gray-200 text-white hover:bg-blue-200;
+  }
+}
+
+.loading-box {
+  position: relative;
+  border: 1px solid rgb(0, 0, 201);
+  border-radius: 1.2rem;
+  height: 3rem;
+  width: 70%;
+}
+
+.loading {
+  position: absolute;
+  background-color: rgb(0, 0, 201);
+  height: 3rem;
+  border-radius: 1.2rem;
+  animation: loading 0.8s infinite;
+}
+
+@keyframes loading {
+  0% {
+    width: 0;
+  }
+
+  100% {
+    width: 100%;
+  }
+}
