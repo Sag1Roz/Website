@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { getProductBySlug } from "../services/Product";
+import { getProductBySlug } from "../services/products";
 import { useEffect, useState } from "react";
 import { Product } from "../models/Product";
 import { Loading } from "../components/Loading";

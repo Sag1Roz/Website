@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom";
 import { Product } from "../models/Product";
 
-type SingleProduct = {
+type SingleProductProps = {
   product: Product;
 };
 
-export function SingleProduct({ product }: SingleProduct) {
+export function SingleProduct({ product }: SingleProductProps) {
   return (
     <Link to={`/product/${product.slug}`}>
       <div>

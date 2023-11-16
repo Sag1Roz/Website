@@ -3,6 +3,12 @@ import { Link } from "react-router-dom";
 export function Navbar() {
   return (
     <nav className="flex m-auto justify-between p-5 max-w-5xl text-blue-500">
+      <Link
+        className="underline transition-all hover:text-cyan-300 "
+        to={"/Login"}
+      >
+        התחבר
+      </Link>
       <Link to={"/"} className="text-2xl ">
         Rozi
       </Link>

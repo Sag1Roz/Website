@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Product } from "../models/Product";
-import { getAllProducts } from "../services/Product";
+import { getAllProducts } from "../services/products";
 import { SingleProduct } from "../components/SingleProduct";
 import { Loading } from "../components/Loading";
 import { Error } from "../components/Error";
