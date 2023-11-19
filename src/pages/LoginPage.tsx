@@ -1,7 +1,11 @@
 import { FormEvent, useState } from "react";
 import { Schema, validation } from "../models/Validation";
+import { useUser } from "../contexts/UserContext";
+import { login } from "../services/users";
 
 export function LoginPage() {
+  const { updateToken, user, logout } = useUser();
+
   const [formData] = useState<Schema>({
     email: "",
     password: "",
@@ -11,6 +15,10 @@ export function LoginPage() {
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
+    if (user !== null) {
+      logout();
+      return;
+    }
     const response = validation.safeParse(formData);
     if (!response.success) {
       const parsedErrors = response.error.format();
@@ -25,6 +33,15 @@ export function LoginPage() {
         return preErrors;
       });
     }
+    handelClick();
+  }
+
+  async function handelClick() {
+    const token = await login({
+      email: formData.email,
+      password: formData.password,
+    });
+    if (token !== null) updateToken(token);
   }
 
   return (
@@ -32,8 +49,22 @@ export function LoginPage() {
       <form onSubmit={handleSubmit}>
         <div className="border border-blue-600 rounded-md shadow-md p-5">
           <h1 className="text-center text-3xl text-blue-700 underline p-3">
-            טופס הרשמה
+            טופס התחברות
           </h1>
+          <div>
+            <label className="block text-blue-500" htmlFor="email">
+              איימיל
+            </label>
+            <input
+              className="input"
+              type="text"
+              onChange={(e) => (formData.email = e.target.value)}
+              id="email"
+            />
+            {errors.password && (
+              <small className="text-red-500 block">{errors.email}</small>
+            )}
+          </div>
           <div>
             <label className="block text-blue-500" htmlFor="password">
               סיסמא
@@ -44,26 +75,12 @@ export function LoginPage() {
               onChange={(e) => (formData.password = e.target.value)}
               id="password"
             />
-            {errors.password && (
+            {errors.email && (
               <small className="text-red-500 block">{errors.password}</small>
             )}
           </div>
-          <div>
-            <label className="block text-blue-500" htmlFor="email">
-              איימל
-            </label>
-            <input
-              className="input"
-              type="text"
-              onChange={(e) => (formData.email = e.target.value)}
-              id="email"
-            />
-            {errors.email && (
-              <small className="text-red-500 block">{errors.email}</small>
-            )}
-          </div>
           <div className="flex justify-center p-3">
-            <button className="   button">הרשמה</button>
+            <button className="button"> {user ? "התנתקות" : "התחברות"}</button>
           </div>
         </div>
       </form>
