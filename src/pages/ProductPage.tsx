@@ -1,29 +1,19 @@
-import { useEffect, useState } from "react";
-import { Product } from "../models/Product";
 import { getAllProducts } from "../services/products";
 import { SingleProduct } from "../components/SingleProduct";
 import { Loading } from "../components/Loading";
 import { Error } from "../components/Error";
+import { useFetch } from "../hooks/useFetch";
 
 export function ProductPage() {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [isError, setIsError] = useState<boolean>(false);
-
-  useEffect(() => {
-    getAllProducts()
-      .then((data) => {
-        if (data !== null) setProducts(data);
-        setIsLoading(false);
-      })
-      .catch(() => {
-        setIsLoading(false);
-        setIsError(true);
-      });
-  }, []);
+  const {
+    data: products,
+    isError,
+    isLoading,
+  } = useFetch(() => getAllProducts());
 
   if (isLoading) return <Loading />;
-  if (isError) return <Error />;
+  if (isError || products === null) return <Error />;
+
   return (
     <div>
       <h1 className="text-3xl text-blue-800 underline text-center hebrew p-5">

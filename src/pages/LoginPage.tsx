@@ -80,7 +80,10 @@ export function LoginPage() {
             )}
           </div>
           <div className="flex justify-center p-3">
-            <button className="button"> {user ? "התנתקות" : "התחברות"}</button>
+            <button type="submit" className="button">
+              {" "}
+              {user ? "התנתקות" : "התחברות"}
+            </button>
           </div>
         </div>
       </form>
