@@ -2,6 +2,7 @@ import { FormEvent, useState } from "react";
 import { Schema, validation } from "../models/Validation";
 import { useUser } from "../contexts/UserContext";
 import { login } from "../services/users";
+import { useValidation } from "../hooks/useValidation";
 
 export function LoginPage() {
   const { updateToken, user, logout } = useUser();
@@ -11,37 +12,24 @@ export function LoginPage() {
     password: "",
   });
 
-  const [errors, setErrors] = useState<Partial<Schema>>({});
-
-  function handleSubmit(e: FormEvent) {
+  const { errors, validate } = useValidation<Schema | null>(validation);
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     if (user !== null) {
       logout();
       return;
     }
-    const response = validation.safeParse(formData);
-    if (!response.success) {
-      const parsedErrors = response.error.format();
-
-      setErrors((preErrors) => {
-        preErrors = {};
-        for (const objectKey in formData) {
-          const key = objectKey as keyof Schema;
-          preErrors[key] = parsedErrors[key]?._errors[0];
-        }
-
-        return preErrors;
-      });
-    }
-    handelClick();
-  }
-
-  async function handelClick() {
-    const token = await login({
+    const data = validate({
       email: formData.email,
       password: formData.password,
     });
-    if (token !== null) updateToken(token);
+    if (data === null) return;
+
+    const token = await login(data);
+
+    if (token) {
+      updateToken(token);
+    }
   }
 
   return (
@@ -61,7 +49,7 @@ export function LoginPage() {
               onChange={(e) => (formData.email = e.target.value)}
               id="email"
             />
-            {errors.password && (
+            {errors.email && (
               <small className="text-red-500 block">{errors.email}</small>
             )}
           </div>
@@ -75,7 +63,7 @@ export function LoginPage() {
               onChange={(e) => (formData.password = e.target.value)}
               id="password"
             />
-            {errors.email && (
+            {errors.password && (
               <small className="text-red-500 block">{errors.password}</small>
             )}
           </div>
