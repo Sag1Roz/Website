@@ -4,7 +4,7 @@ import { useUser } from "../contexts/UserContext";
 import { login } from "../services/users";
 import { useValidation } from "../hooks/useValidation";
 
-export function LoginPage() {
+export function Login() {
   const { updateToken, user, logout } = useUser();
 
   const [formData] = useState<Schema>({
@@ -33,9 +33,9 @@ export function LoginPage() {
   }
 
   return (
-    <div className=" h-screen items-center  flex justify-center hebrew ">
+    <div className=" items-center  flex justify-center hebrew ">
       <form onSubmit={handleSubmit}>
-        <div className="border border-blue-600 rounded-md shadow-md p-5">
+        <div className="border border-blue-600 rounded-md shadow-md p-5 bg-white">
           <h1 className="text-center text-3xl text-blue-700 underline p-3">
             טופס התחברות
           </h1>
@@ -69,7 +69,6 @@ export function LoginPage() {
           </div>
           <div className="flex justify-center p-3">
             <button type="submit" className="button">
-              {" "}
               {user ? "התנתקות" : "התחברות"}
             </button>
           </div>
